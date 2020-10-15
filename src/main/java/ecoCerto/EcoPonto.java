@@ -12,12 +12,20 @@ public class EcoPonto {
 	private String logradouro;
 	private String bairro;
 	private String cidade;
+	private String cep;
 	private String UF;
 	public static List<EcoPonto> list = new ArrayList<EcoPonto>();;
 	
 	public EcoPonto() {}
 	
-	public void include(String cep, TipoEcoPonto tipo) {
+	public String include(String cep, TipoEcoPonto tipo) {
+		
+		for(EcoPonto i : list) {
+			if(i.getCep().equals(cep) && i.getTipo().equals(tipo)) {
+				System.out.println("Ja existe um EcoPonto desse tipo: " + i.getTipo() + ", nesse endereço: " + i.getCep());
+				return null;
+			}
+		}
 		
 		JSONObject json = ApiCep.Api(cep);
 		EcoPonto obj = new EcoPonto();
@@ -27,10 +35,13 @@ public class EcoPonto {
 		obj.setLogradouro(json.getString("logradouro"));
 		obj.setBairro(json.getString("bairro"));
 		obj.setCidade(json.getString("cidade"));
+		obj.setCep(cep);
 		obj.setUF(json.getString("uf"));
 		obj.setTipo(tipo);
 		
 		list.add(obj);
+		
+		return obj.toString();
 		
 	}
 	
@@ -114,6 +125,14 @@ public class EcoPonto {
 		this.cidade = cidade;
 	}
 	
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
 	public String getUF() {
 		return UF;
 	}
