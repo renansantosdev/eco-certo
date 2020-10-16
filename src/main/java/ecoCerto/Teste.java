@@ -1,19 +1,22 @@
 package main.java.ecoCerto;
 
-public class TesteApi {
+public class Teste {
 
-    public static void main(String[] args) {
-       
+	public static void main(String[] args) {
+
     	EcoPonto teste = new EcoPonto();
     	
     	teste.include("03924090", TipoEcoPonto.Embalao);
     	teste.include("08693190", TipoEcoPonto.Vidrao);
     	teste.include("09351390", TipoEcoPonto.Pilhao);
+    	teste.include("09351390", TipoEcoPonto.Entulho);
     	
-    	System.out.println(teste.listAll());
+    	Usuario user = new Usuario("08680000", "Renan");
     	
-    	
-    	
+    	System.out.println(user.listUpComing(25));
+
 	}
+
+	
 
 }

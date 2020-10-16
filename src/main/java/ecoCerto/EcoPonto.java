@@ -20,9 +20,9 @@ public class EcoPonto {
 	
 	public String include(String cep, TipoEcoPonto tipo) {
 		
-		for(EcoPonto i : list) {
-			if(i.getCep().equals(cep) && i.getTipo().equals(tipo)) {
-				System.out.println("Ja existe um EcoPonto desse tipo: " + i.getTipo() + ", nesse endereço: " + i.getCep());
+		for(EcoPonto e : list) {
+			if(e.getCep().equals(cep) && e.getTipo().equals(tipo)) {
+				System.out.println("Ja existe um EcoPonto desse tipo: " + e.getTipo() + ", nesse endereço: " + e.getCep());
 				return null;
 			}
 		}
@@ -45,14 +45,16 @@ public class EcoPonto {
 		
 	}
 	
-	public void update(int index, double latitude, double longitude, String logradouro, String bairro, String cidade, String uf) {
+	public void update(int index, String cep) {
 		
-		list.get(index).setLatitude(latitude);
-		list.get(index).setLongitude(longitude);
-		list.get(index).setLogradouro(logradouro);
-		list.get(index).setBairro(bairro);
-		list.get(index).setCidade(cidade);
-		list.get(index).setUF(uf);
+		JSONObject json = ApiCep.Api(cep);
+		
+		list.get(index).setLatitude(json.getDouble("latitude"));
+		list.get(index).setLongitude(json.getDouble("longitude"));
+		list.get(index).setLogradouro(json.getString("logradouro"));
+		list.get(index).setBairro(json.getString("bairro"));
+		list.get(index).setCidade(json.getString("cidade"));
+		list.get(index).setUF(json.getString("uf"));
 		
 	}
 	
@@ -84,43 +86,52 @@ public class EcoPonto {
 	@Override
 	public String toString() {
 		
-		return	"\n tipo= " + tipo +
-				"\n latitude= " + latitude + 
-				"\n longitude= " + longitude + 
-				"\n logradouro= " + logradouro + 
-				"\n bairro= " + bairro + 
-				"\n cidade= " + cidade + 
-				"\n UF= " + UF;
+		return	"\n tipo: " + tipo +
+				"\n latitude: " + latitude + 
+				"\n longitude: " + longitude + 
+				"\n logradouro: " + logradouro + 
+				"\n bairro: " + bairro + 
+				"\n cidade: " + cidade + 
+				"\n UF: " + UF;
 		
 	}
 
 	public double getLatitude() {
 		return latitude;
 	}
+	
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
+	
 	public double getLongitude() {
 		return longitude;
 	}
+	
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
+	
 	public String getLogradouro() {
 		return logradouro;
 	}
+	
 	public void setLogradouro(String logradouro) {
 		this.logradouro = logradouro;
 	}
+	
 	public String getBairro() {
 		return bairro;
 	}
+	
 	public void setBairro(String bairro) {
 		this.bairro = bairro;
 	}
+	
 	public String getCidade() {
 		return cidade;
 	}
+	
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
 	}
