@@ -9,6 +9,7 @@ import main.java.org.json.JSONObject;
 
 public class ApiCep {
 	
+	// METODO QUE TRAS O RETORNO EM JSON QUE PRECISAMOS
 	public static JSONObject Api(String cep) {
 		
 		JSONObject json = new JSONObject();
@@ -34,6 +35,7 @@ public class ApiCep {
 		
 	}
 
+	//API PARA PEGAR DADOS DO ENDERECO
 	public static JSONObject ApiViaCep(String cep) {
 		
 		try {
@@ -56,6 +58,7 @@ public class ApiCep {
 		
 	}
 	
+	//API PARA PEGAR LATITUDE E LONGITUDE
 	public static JSONObject ApiHereIs(String cep) {
 		
 		try {

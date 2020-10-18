@@ -18,6 +18,7 @@ public class EcoPonto {
 	
 	public EcoPonto() {}
 	
+	//METODO PARA INCLUIR UM NOVO ECOPONTO
 	public String include(String cep, TipoEcoPonto tipo) {
 		
 		for(EcoPonto e : list) {
@@ -45,6 +46,7 @@ public class EcoPonto {
 		
 	}
 	
+	//METODO PARA ALTERACAO DE UM ECOPONTO
 	public void update(int index, String cep) {
 		
 		JSONObject json = ApiCep.Api(cep);
@@ -58,18 +60,26 @@ public class EcoPonto {
 		
 	}
 	
+	//METODO PARA DELETAR UM ECOPONTO
 	public void delete(int index) {
 		
 		list.remove(index);
 		
 	}
 	
+	//METODO PARA CONSULTAR APENAS UM ECOPONTO
 	public String get(int index) {
 		
 		return list.get(index).toString();
 		
 	}
 	
+	//METODO PARA PEGAR A LISTA TODOS ECOPONTOS
+	public static List<EcoPonto> getAll(){
+		return list;
+	}
+	
+	//METODO PARA LISTAS TODOS OS ECOPONTOS
 	public String listAll() {
 		
 		String quebraLinha = System.getProperty("line.separator");

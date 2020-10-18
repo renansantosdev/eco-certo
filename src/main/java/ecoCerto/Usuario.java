@@ -16,6 +16,7 @@ public class Usuario {
 	private String cidade;
 	private String UF;
 
+	//CONSTRUTOR PARA CRIACAO DE UM NOVO USUARIO
 	public Usuario(String cep, String nome) {
 
 		JSONObject json = ApiCep.Api(cep);
@@ -30,6 +31,7 @@ public class Usuario {
 
 	}
 
+	//METODO PARA ALTERAR UM USUARIO
 	public void update(String cep) {
 
 		JSONObject json = ApiCep.Api(cep);
@@ -43,10 +45,11 @@ public class Usuario {
 
 	}
 
+	//METODO PARA LISTAR OS ECOPONTOS PROXIMOS AO USUARIO
 	public String listUpComing(double radar) {
 
 		String quebraLinha = System.getProperty("line.separator");
-		List<EcoPonto> list = EcoPonto.list;
+		List<EcoPonto> list = EcoPonto.getAll();
 		String res = "";
 		int total = 0;
 
@@ -69,6 +72,7 @@ public class Usuario {
 		return "Foram encontrados " + total + " EcoPontos: \n" + res;
 	}
 
+	//METODO QUE FAZ O CALCULO DA DISTANCIA
 	public double distance(double lat1, double lon1, double lat2, double lon2) {
 
 		double deg2 = Math.PI / 180;
