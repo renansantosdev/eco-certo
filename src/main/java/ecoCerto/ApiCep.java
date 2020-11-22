@@ -7,7 +7,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import main.java.org.json.JSONObject;
 
-public class ApiCep {
+public abstract class ApiCep {
 	
 	// METODO QUE TRAS O RETORNO EM JSON QUE PRECISAMOS
 	public static JSONObject Api(String cep) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import main.java.org.json.JSONObject;
 
-public class EcoPonto {
+public class EcoPonto implements EcoPontoInterface {
 	
 	private TipoEcoPonto tipo;
 	private	double latitude;
@@ -14,53 +14,68 @@ public class EcoPonto {
 	private String cidade;
 	private String cep;
 	private String UF;
-	public static List<EcoPonto> list = new ArrayList<EcoPonto>();;
+	public static List<EcoPonto> list = new ArrayList<EcoPonto>();
 	
 	public EcoPonto() {}
 	
 	//METODO PARA INCLUIR UM NOVO ECOPONTO
+	@Override
 	public String include(String cep, TipoEcoPonto tipo) {
 		
-		for(EcoPonto e : list) {
-			if(e.getCep().equals(cep) && e.getTipo().equals(tipo)) {
-				System.out.println("Ja existe um EcoPonto desse tipo: " + e.getTipo() + ", nesse endereço: " + e.getCep());
-				return null;
+		try {
+			
+			for(EcoPonto e : list) {
+				if(e.getCep().equals(cep) && e.getTipo().equals(tipo)) {
+					System.out.println("Ja existe um EcoPonto desse tipo: " + e.getTipo() + ", nesse endereço: " + e.getCep());
+					return null;
+				}
 			}
+			
+			JSONObject json = ApiCep.Api(cep);
+			EcoPonto obj = new EcoPonto();
+			
+			obj.setLatitude(json.getDouble("latitude"));
+			obj.setLongitude(json.getDouble("longitude"));
+			obj.setLogradouro(json.getString("logradouro"));
+			obj.setBairro(json.getString("bairro"));
+			obj.setCidade(json.getString("cidade"));
+			obj.setCep(cep);
+			obj.setUF(json.getString("uf"));
+			obj.setTipo(tipo);
+			
+			list.add(obj);
+			
+			return obj.toString();
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		
-		JSONObject json = ApiCep.Api(cep);
-		EcoPonto obj = new EcoPonto();
-		
-		obj.setLatitude(json.getDouble("latitude"));
-		obj.setLongitude(json.getDouble("longitude"));
-		obj.setLogradouro(json.getString("logradouro"));
-		obj.setBairro(json.getString("bairro"));
-		obj.setCidade(json.getString("cidade"));
-		obj.setCep(cep);
-		obj.setUF(json.getString("uf"));
-		obj.setTipo(tipo);
-		
-		list.add(obj);
-		
-		return obj.toString();
 		
 	}
 	
 	//METODO PARA ALTERACAO DE UM ECOPONTO
+	@Override
 	public void update(int index, String cep) {
 		
-		JSONObject json = ApiCep.Api(cep);
-		
-		list.get(index).setLatitude(json.getDouble("latitude"));
-		list.get(index).setLongitude(json.getDouble("longitude"));
-		list.get(index).setLogradouro(json.getString("logradouro"));
-		list.get(index).setBairro(json.getString("bairro"));
-		list.get(index).setCidade(json.getString("cidade"));
-		list.get(index).setUF(json.getString("uf"));
+		try {
+
+			JSONObject json = ApiCep.Api(cep);
+			
+			list.get(index).setLatitude(json.getDouble("latitude"));
+			list.get(index).setLongitude(json.getDouble("longitude"));
+			list.get(index).setLogradouro(json.getString("logradouro"));
+			list.get(index).setBairro(json.getString("bairro"));
+			list.get(index).setCidade(json.getString("cidade"));
+			list.get(index).setUF(json.getString("uf"));
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 		
 	}
 	
 	//METODO PARA DELETAR UM ECOPONTO
+	@Override
 	public void delete(int index) {
 		
 		list.remove(index);
@@ -68,6 +83,7 @@ public class EcoPonto {
 	}
 	
 	//METODO PARA CONSULTAR APENAS UM ECOPONTO
+	@Override
 	public String get(int index) {
 		
 		return list.get(index).toString();
@@ -80,13 +96,30 @@ public class EcoPonto {
 	}
 	
 	//METODO PARA LISTAS TODOS OS ECOPONTOS
+	@Override
 	public String listAll() {
 		
 		String quebraLinha = System.getProperty("line.separator");
 		String res = "";
 		
 		for (int i = 0; i < list.size(); i++) {
-			res += quebraLinha + " index= " + i + list.get(i) + quebraLinha;
+			res += quebraLinha + " index = " + i + list.get(i) + quebraLinha;
+		}
+				
+		return res;
+		
+	}
+	
+	@Override
+	public String listAll(TipoEcoPonto tipo) {
+		
+		String quebraLinha = System.getProperty("line.separator");
+		String res = "";
+		
+		for (int i = 0; i < list.size(); i++) {
+			if(list.get(i).getTipo() == tipo) {				
+				res += quebraLinha + " index = " + i + list.get(i) + quebraLinha;
+			}
 		}
 				
 		return res;
